@@ -77,6 +77,28 @@ app.get('/students/:id', (req, res) => {
     })
 })
 
+// Create a dynamic filter
+app.get('/students/filter/search', (req, res) => {
+  const data = {
+    where: { }
+  }
+
+  if (req.query.section !== undefined) {
+    data.where.section = req.query.section
+  }
+
+  if (req.query.id !== undefined) {
+    data.where.id = req.query.id
+  }
+
+  Student.findAll(data)
+    .then((results) => {
+      res.status(200).send(results)
+    })
+    .catch((err) => {
+      res.status(500).send(err)
+    })
+})
 // Updating (updating --PUT method) an existing student
 app.put('/students/:id', (req, res) => {
   const studentId = parseInt(req.params.id)
